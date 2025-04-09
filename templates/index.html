@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEJST Data Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="banner">
+        <div class="banner-content">
+            <div class="earth-container">
+                <img src="{{ url_for('static', filename='images/earth.jpg') }}" alt="Earth" class="earth-image">
+            </div>
+            <h1>Climate & Economic Justice Analysis</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <form id="analysis-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="state">State/Territory:</label>
+                    <input type="text" id="state" name="state" placeholder="e.g., Alabama">
+                </div>
+                
+                <div class="form-group">
+                    <label for="county">County:</label>
+                    <input type="text" id="county" name="county" placeholder="e.g., Autauga County">
+                </div>
+                
+                <div class="form-group">
+                    <label for="tract-id">Census Tract ID:</label>
+                    <input type="text" id="tract-id" name="tract-id" placeholder="e.g., 01001020100">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="query">Analysis Query:</label>
+                <textarea id="query" name="query" rows="3" required style="resize: none;"
+                    placeholder="What would you like to know? e.g., 'Analyze the disadvantaged status'"></textarea>
+            </div>
+            
+            <button type="submit">Analyze Data</button>
+        </form>
+        
+        <div id="analysis-results"></div>
+        <div class="disclaimer" style="color: #666; font-style: italic; margin-top: 10px; font-size: 0.9em;">
+            Experimental. Results may be inaccurate.
+        </div>
+    </div>
+
+    <div class="data-dictionary-info">
+        <h3>Available Data Indicators (Examples for your query)</h3>
+        <p>Explore the categories below to see the types of data available. You can use these terms in your analysis query above.</p>
+
+        <details>
+            <summary>Demographics</summary>
+            <ul>
+                <li title="Percent Black or African American alone"><strong>Percent Black/African American</strong> (<code>DM_B</code>)</li>
+                <li title="Percent American Indian / Alaska Native"><strong>Percent American Indian/Alaska Native</strong> (<code>DM_AI</code>)</li>
+                <li title="Percent Asian"><strong>Percent Asian</strong> (<code>DM_A</code>)</li>
+                <li title="Percent Native Hawaiian or Pacific Islander"><strong>Percent Native Hawaiian/Pacific Islander</strong> (<code>DM_HI</code>)</li>
+                <li title="Percent two or more races"><strong>Percent Two or More Races</strong> (<code>DM_T</code>)</li>
+                <li title="Percent White"><strong>Percent White</strong> (<code>DM_W</code>)</li>
+                <li title="Percent Hispanic or Latino"><strong>Percent Hispanic/Latino</strong> (<code>DM_H</code>)</li>
+                <li title="Percent other races"><strong>Percent Other Races</strong> (<code>DM_O</code>)</li>
+                <li title="Percent age under 10"><strong>Percent Age Under 10</strong> (<code>AGE_10</code>)</li>
+                <li title="Percent age 10 to 64"><strong>Percent Age 10-64</strong> (<code>AGE_MIDDLE</code>)</li>
+                <li title="Percent age over 64"><strong>Percent Age Over 64</strong> (<code>AGE_OLD</code>)</li>
+                <li title="Total population"><strong>Total Population</strong> (<code>TPF</code>)</li>
+             </ul>
+        </details>
+
+        <details>
+            <summary>Disadvantaged Community Status & Income</summary>
+            <ul>
+                <li title="Identified as disadvantaged (Definition N community, including adjacency index tracts)"><strong>Identified as Disadvantaged</strong> (<code>SN_C</code>)</li>
+                <li title="Identified as disadvantaged without considering neighbors"><strong>Identified as Disadvantaged (Directly)</strong></li>
+                <li title="Identified as disadvantaged based on neighbors and relaxed low income threshold only"><strong>Identified as Disadvantaged (Neighbors/Relaxed Income)</strong></li>
+                <li title="Identified as disadvantaged due to tribal overlap"><strong>Identified as Disadvantaged (Tribal Overlap)</strong> (<code>SN_T</code>)</li>
+                <li title="Identified as disadvantaged in v1.0 (grandfathered)"><strong>Identified as Disadvantaged (Grandfathered v1.0)</strong> (<code>SN_GRAND</code>)</li>
+                <li title="Is low income (imputed and adjusted)?"><strong>Is Low Income?</strong> (<code>FPL200S</code>)</li>
+                <li title="Adjusted percent of individuals below 200% Federal Poverty Line (percentile)"><strong>Low Income Percentile (Below 200% FPL)</strong> (<code>P200_I_PFS</code>)</li>
+                <li title="Percent of individuals < 100% Federal Poverty Line (percentile)"><strong>Poverty Percentile (Below 100% FPL)</strong> (<code>P100_PFS</code>)</li>
+                <li title="Total threshold criteria exceeded"><strong>Total Threshold Criteria Exceeded</strong> (<code>TC</code>)</li>
+                <li title="Total categories exceeded"><strong>Total Categories Exceeded</strong> (<code>CC</code>)</li>
+                <li title="Share of neighbors that are identified as disadvantaged"><strong>Share of Disadvantaged Neighbors</strong></li>
+                <li title="Percentage of tract that is disadvantaged by area"><strong>Percent Area Disadvantaged</strong></li>
+             </ul>
+        </details>
+
+        <details>
+            <summary>Climate Change Risk</summary>
+            <ul>
+                <li title="Expected agricultural loss rate (Natural Hazards Risk Index)"><strong>Expected Agricultural Loss Rate</strong> (Percentile: <code>EALR_PFS</code>, Threshold: <code>EAL_ET</code>)</li>
+                <li title="Expected building loss rate (Natural Hazards Risk Index)"><strong>Expected Building Loss Rate</strong> (Percentile: <code>EBLR_PFS</code>, Threshold: <code>EBL_ET</code>)</li>
+                <li title="Expected population loss rate (Natural Hazards Risk Index)"><strong>Expected Population Loss Rate</strong> (Percentile: <code>EPLR_PFS</code>, Threshold: <code>EPL_ET</code>)</li>
+                <li title="Share of properties at risk of flood in 30 years"><strong>Flood Risk</strong> (Percentile: <code>FLD_PFS</code>, Threshold: <code>FLD_ET</code>)</li>
+                <li title="Share of properties at risk of fire in 30 years"><strong>Wildfire Risk</strong> (Percentile: <code>WFR_PFS</code>, Threshold: <code>WFR_ET</code>)</li>
+             </ul>
+        </details>
+
+        <details>
+            <summary>Energy & Air Quality</summary>
+            <ul>
+                 <li title="Energy burden"><strong>Energy Burden</strong> (Percentile: <code>EBF_PFS</code>, Threshold: <code>EB_ET</code>)</li>
+                 <li title="PM2.5 in the air"><strong>PM2.5 Exposure</strong> (Percentile: <code>PM25F_PFS</code>, Threshold: <code>PM25_ET</code>)</li>
+                 <li title="Diesel particulate matter exposure"><strong>Diesel PM Exposure</strong> (Percentile: <code>DSF_PFS</code>, Threshold: <code>DS_ET</code>)</li>
+             </ul>
+        </details>
+
+        <details>
+            <summary>Transportation</summary>
+            <ul>
+                <li title="Traffic proximity and volume"><strong>Traffic Proximity/Volume</strong> (Percentile: <code>TF_PFS</code>, Threshold: <code>TP_ET</code>)</li>
+                <li title="DOT Travel Barriers Score (percentile)"><strong>DOT Travel Barriers Score</strong> (Percentile: <code>TD_PFS</code>, Threshold: <code>TD_ET</code>)</li>
+             </ul>
+        </details>
+
+        <details>
+            <summary>Housing & Land Use</summary>
+            <ul>
+                <li title="Housing burden (percent)"><strong>Housing Burden</strong> (Percentile: <code>HBF_PFS</code>, Threshold: <code>HB_ET</code>)</li>
+                <li title="Percent pre-1960s housing (lead paint indicator)"><strong>Pre-1960s Housing (Lead Paint Risk)</strong> (Percentile: <code>LPF_PFS</code>, Threshold: <code>LPP_ET</code>)</li>
+                <li title="Median value ($) of owner-occupied housing units"><strong>Median Home Value</strong> (Percentile available)</li>
+                <li title="Share of the tract's land area that is covered by impervious surface or cropland as a percent"><strong>Impervious Surface/Cropland</strong> (Percentile: <code>IS_PFS</code>, Threshold: <code>IS_ET</code>)</li>
+                <li title="Share of homes with no kitchen or indoor plumbing (percent)"><strong>Lack of Kitchen/Plumbing</strong> (Percentile: <code>KP_PFS</code>, Threshold: <code>KP_ET</code>)</li>
+                <li title="Tract experienced historic underinvestment (redlining)"><strong>Historic Underinvestment (Redlining)</strong> (Threshold: <code>HRS_ET</code>)</li>
+             </ul>
+        </details>
+
+         <details>
+            <summary>Pollution & Waste Sites</summary>
+            <ul>
+                <li title="Proximity to hazardous waste sites"><strong>Proximity to Hazardous Waste Sites (TSDF)</strong> (Percentile: <code>TSDF_PFS</code>, Threshold: <code>TSDF_ET</code>)</li>
+                <li title="Proximity to NPL (Superfund) sites"><strong>Proximity to Superfund (NPL) Sites</strong> (Percentile: <code>NPL_PFS</code>, Threshold: <code>NPL_ET</code>)</li>
+                <li title="Proximity to Risk Management Plan (RMP) facilities"><strong>Proximity to RMP Facilities</strong> (Percentile: <code>RMP_PFS</code>, Threshold: <code>RMP_ET</code>)</li>
+                <li title="Is there at least one Formerly Used Defense Site (FUDS) in the tract?"><strong>Formerly Used Defense Site (FUDS) Present?</strong> (<code>FUDS_ET</code>)</li>
+                <li title="Is there at least one abandoned mine in this census tract?"><strong>Abandoned Mine Land (AML) Present?</strong> (<code>AML_ET</code>)</li>
+                <li title="Wastewater discharge"><strong>Wastewater Discharge</strong> (Percentile: <code>WF_PFS</code>, Threshold: <code>WD_ET</code>)</li>
+                <li title="Leaky underground storage tanks"><strong>Leaky Underground Storage Tanks (UST)</strong> (Percentile: <code>UST_PFS</code>, Threshold: <code>UST_ET</code>)</li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Health Burdens</summary>
+            <ul>
+                 <li title="Current asthma among adults aged greater than or equal to 18 years"><strong>Asthma Rate</strong> (Percentile: <code>AF_PFS</code>, Threshold: <code>A_ET</code>)</li>
+                 <li title="Diagnosed diabetes among adults aged greater than or equal to 18 years"><strong>Diabetes Rate</strong> (Percentile: <code>DF_PFS</code>, Threshold: <code>DB_ET</code>)</li>
+                 <li title="Coronary heart disease among adults aged greater than or equal to 18 years"><strong>Heart Disease Rate</strong> (Percentile: <code>HDF_PFS</code>, Threshold: <code>HD_ET</code>)</li>
+                 <li title="Life expectancy (years)"><strong>Low Life Expectancy</strong> (Percentile: <code>LLEF_PFS</code>, Threshold: <code>LLE_ET</code>)</li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Workforce Development & Socioeconomic Factors</summary>
+             <ul>
+                <li title="Low median household income as a percent of area median income"><strong>Low Median Household Income (vs Area)</strong> (Percentile: <code>LMI_PFS</code>, Threshold: <code>LMI_ET</code>)</li>
+                <li title="Linguistic isolation (percent)"><strong>Linguistic Isolation</strong> (Percentile: <code>LIF_PFS</code>, Threshold: <code>LISO_ET</code>)</li>
+                <li title="Unemployment (percent)"><strong>Unemployment Rate</strong> (Percentile: <code>UF_PFS</code>, Threshold: <code>UN_ET</code>)</li>
+                <li title="Percent individuals age 25 or over with less than high school degree"><strong>Low High School Attainment</strong> (Percentile available, Threshold: <code>LHE</code>)</li>
+                <li title="Percent of residents who are not currently enrolled in higher ed"><strong>Percent Not Enrolled in Higher Education</strong></li>
+                <li title="Specific indicators for Island Areas available (e.g., `IA_LMI_ET`, `IA_UN_ET`, `IA_POV_ET`)"><strong>Island Area Specific Indicators</strong> (Unemployment, Poverty, Income for 2009/2019)</li>
+             </ul>
+        </details>
+         <details>
+            <summary>Tribal Lands</summary>
+            <ul>
+                <li title="Number of Tribal areas within Census tract"><strong>Number of Tribal Areas</strong> (<code>TA_COUNT_C</code>)</li>
+                <li title="Names of Tribal areas within Census tract"><strong>Names of Tribal Areas</strong></li>
+                <li title="Percent of the Census tract that is within Tribal areas"><strong>Percent of Tract within Tribal Areas</strong> (<code>TA_PERC</code>)</li>
+             </ul>
+        </details>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

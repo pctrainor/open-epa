@@ -1,0 +1,253 @@
+:root {
+    --bg-color: #1a1a2e;
+    --panel-bg: #252941;
+    --text-color: #e6e6e6;
+    --accent-color: #4361ee;
+    --accent-hover: #3652d9;
+    --border-color: #444680;
+    --input-bg: #2a3252;
+    --input-text: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    min-height: 100vh;
+}
+
+.container {
+    width: 92%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+h1 {
+    color: white;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+/* Form styling */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    font-size: 1rem;
+}
+
+button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+#analysis-results {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--panel-bg);
+    min-height: 100px;
+}
+
+.error {
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+.analysis-text {
+    white-space: pre-line;
+}
+
+/* Banner styling */
+.banner {
+    background: linear-gradient(135deg, #181E33, #333952);
+    padding: 10px 0;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.earth-container {
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.earth-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    border: 2px solid #4361ee;
+    object-fit: cover;
+}
+
+/* Media queries for larger screens */
+@media (min-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    button {
+        width: auto;
+        padding: 10px 30px;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .earth-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    #analysis-results {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+/* Styles for Data Dictionary Info Section */
+.data-dictionary-info {
+    margin-top: 25px; /* Added a bit more space */
+    margin-right: auto;
+    margin-left: 0; /* Align to left side of page */
+    border: 1px solid var(--border-color);
+    padding: 15px 20px; /* Adjusted padding */
+    border-radius: 6px; /* Match results panel */
+    background-color: var(--panel-bg);
+    text-align: left; /* Ensure text aligns left */
+}
+
+.data-dictionary-info h3 {
+    color: var(--text-color);
+    margin-top: 0; /* Remove default top margin */
+    margin-bottom: 10px;
+    font-size: 1.1rem; /* Slightly smaller than h1 */
+    border-bottom: 1px solid var(--border-color); /* Add a separator */
+    padding-bottom: 8px;
+}
+
+.data-dictionary-info p {
+    color: var(--text-color);
+    opacity: 0.9; /* Slightly less emphasis */
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.data-dictionary-info summary {
+    font-weight: 500; /* Adjusted weight */
+    cursor: pointer;
+    padding: 8px 0; /* Added padding */
+    color: var(--accent-color); /* Use accent color for visibility */
+    transition: color 0.2s ease;
+    outline: none; /* Remove default focus outline if adding custom */
+    font-size: 1rem;
+    margin-bottom: 5px; /* Space before list */
+}
+
+.data-dictionary-info summary:hover {
+    color: var(--accent-hover);
+}
+
+/* Optional: Style the default disclosure triangle - may vary by browser */
+.data-dictionary-info summary::marker {
+    color: var(--accent-color);
+}
+.data-dictionary-info summary:hover::marker {
+     color: var(--accent-hover);
+}
+
+/* Style when the details element is open */
+.data-dictionary-info details[open] summary {
+     margin-bottom: 10px; /* More space when open */
+}
+
+.data-dictionary-info ul {
+    list-style-type: circle; /* Changed list style */
+    margin-left: 10px; /* Reduced margin */
+    padding-left: 20px; /* Adjusted padding */
+    font-size: 0.9rem; /* Slightly smaller font */
+    border-left: 1px solid var(--border-color); /* Add visual nesting */
+    margin-top: 0; /* Align with summary */
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.data-dictionary-info li {
+    margin-bottom: 8px; /* More space between items */
+    color: var(--text-color);
+    opacity: 0.95;
+}
+
+.data-dictionary-info li::marker {
+    color: var(--text-color); /* Match text color */
+    opacity: 0.7;
+}
+
+.data-dictionary-info strong { /* Style the indicator name */
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.data-dictionary-info code {
+    font-size: 0.85em; /* Slightly smaller code font */
+    background-color: var(--input-bg); /* Use input background */
+    color: var(--text-color);
+    opacity: 0.9;
+    padding: 3px 6px; /* Adjusted padding */
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    margin-left: 4px; /* Space before code block */
+}
